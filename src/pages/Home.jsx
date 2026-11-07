@@ -1,15 +1,17 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useDeferredValue } from "react";
 import { useFetch } from "../hooks/useFetch";
+import ProductCard from "../components/ProductCard";
 
 function Home() {
   const { data, loading, error } = useFetch("https://dummyjson.com/products?limit=100");
 
-  // 1. Search, Category, Sort තියාගන්න State 3ක්
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("default");
-
   const searchRef = useRef(null);
+
+  const deferredSearch = useDeferredValue(search);
+  const isStale = search !== deferredSearch;
 
   useEffect(() => {
     searchRef.current?.focus();
@@ -22,9 +24,25 @@ function Home() {
     [products]
   );
 
+  const filteredProducts = useMemo(() => {
+    let result = products.filter(p =>
+      p.title.toLowerCase().includes(deferredSearch.toLowerCase())
+    );
+
+    if (category !== "all") {
+      result = result.filter(p => p.category === category);
+    }
+
+    if (sort === "low") result = [...result].sort((a, b) => a.price - b.price);
+    if (sort === "high") result = [...result].sort((a, b) => b.price - a.price);
+
+    return result;
+  }, [products, deferredSearch, category, sort]);
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-6">All Products</h1>
+
 
       <div className="flex flex-col sm:flex-row gap-3 mb-8">
         <input
@@ -63,6 +81,23 @@ function Home() {
       {error && (
         <p className="text-center text-red-500 bg-red-50 rounded-lg py-6">⚠️ {error}</p>
       )}
+
+      {!loading && !error && filteredProducts.length === 0 && (
+        <p className="text-center text-gray-500 py-10">No products found 😕</p>
+      )}
+
+      {!loading && !error && (
+        <p className="text-sm text-gray-500 mb-4">
+         Numbr of products: <span className="font-bold text-indigo-600">{filteredProducts.length}</span>
+        </p>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {filteredProducts.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+
     </div>
   );
 }

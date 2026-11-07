@@ -1,7 +1,11 @@
 import { Link, NavLink } from "react-router";
+import { useAuth } from "../context/AuthContext"; 
+import { useCart } from "../context/CartContext";
 
 function Navbar() {
-  
+  const { user, logout } = useAuth(); 
+  const { totalItems } = useCart();
+
   const linkClass = ({ isActive }) =>
     isActive ? "text-indigo-600 font-semibold" : "text-gray-600 hover:text-indigo-600";
 
@@ -19,11 +23,28 @@ function Navbar() {
 
           <NavLink to="/cart" className={linkClass}>
             Cart
+            {totalItems > 0 && (
+              <span className="ml-1 bg-indigo-600 text-white text-xs rounded-full px-2 py-0.5">
+                {totalItems}
+              </span>
+            )}
           </NavLink>
 
-          <NavLink to="/login" className={linkClass}>
-            Login
-          </NavLink>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline text-sm text-gray-500">Hi, {user.name}</span>
+              <button
+                onClick={logout}
+                className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <NavLink to="/login" className={linkClass}>
+              Login
+            </NavLink>
+          )}
         </div>
       </div>
     </nav>
