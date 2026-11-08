@@ -19,7 +19,7 @@ function cartReducer(state, action) {
         .map(item =>
           item.id === action.id ? { ...item, qty: item.qty + action.amount } : item
         )
-        .filter(item => item.qty > 0); // ප්‍රමාණය 0 වුණොත් cart එකෙන් අයින් කරනවා
+        .filter(item => item.qty > 0); 
     case "REMOVE":
       return state.filter(item => item.id !== action.id);
     case "CLEAR":

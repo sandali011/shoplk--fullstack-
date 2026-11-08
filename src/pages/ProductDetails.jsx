@@ -66,7 +66,7 @@ function ProductDetails() {
           <p className="text-5xl mb-3">✅</p>
           <h3 className="text-xl font-bold text-gray-800 mb-2">Successfully Added!</h3>
           <p className="text-sm text-gray-600 mb-6">
-            <span className="font-semibold text-gray-800">"{product.title}"</span> සාර්ථකව Cart එකට එකතු කළා.
+            <span className="font-semibold text-gray-800">"{product.title}"</span> Product Added Successfully
           </p>
           <button
             onClick={() => setShowAdded(false)}
