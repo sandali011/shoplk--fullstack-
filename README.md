@@ -1,3 +1,5 @@
+🌐 Live Demo:https://shoplk-fullstack.vercel.app/
+
 # 🛍️ ShopLK – Modern E-Commerce Web Application
 
 A full-featured, responsive e-commerce web application built from the ground up using **React 19**, **React Router v8**, and **Tailwind CSS v4**. Powered by the **DummyJSON REST API** for live product data.
