@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import { useCart } from "../context/CartContext";
+import Modal from "./Modal";
 
 function ProductCard({ product }) {
+  const [showAdded, setShowAdded] = useState(false);
   
   const { dispatch } = useCart();
 
@@ -15,6 +18,7 @@ function ProductCard({ product }) {
         thumbnail: product.thumbnail,
       },
     });
+     setShowAdded(true);
   }
 
   return (
@@ -42,6 +46,23 @@ function ProductCard({ product }) {
           Add to Cart
         </button>
       </div>
+
+      <Modal isOpen={showAdded} onClose={() => setShowAdded(false)}>
+        <div className="text-center">
+          <p className="text-5xl mb-3">✅</p>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">Successfully Added!</h3>
+          <p className="text-sm text-gray-600 mb-6">
+            <span className="font-semibold text-gray-800">"{product.title}"</span> Successfully Added to thr Cart.
+          </p>
+
+          <button
+            onClick={() => setShowAdded(false)}
+            className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold cursor-pointer"
+          >
+            OK
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }
