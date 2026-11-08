@@ -15,10 +15,10 @@ function Login() {
 
     const errors = {};
     if (username.length < 3) {
-      errors.username = "Username එකේ අකුරු 3ක්වත් තියෙන්න ඕනේ";
+      errors.username = "Username must be at least 3 characters";
     }
     if (password.length < 6) {
-      errors.password = "Password එක අකුරු 6ක්වත් දිග වෙන්න ඕනේ";
+      errors.password = "Password must be at least 6 characters";
     }
     if (Object.keys(errors).length > 0) {
       return { errors, username };
@@ -74,10 +74,6 @@ function Login() {
           {isPending ? "Logging in..." : "Login"}
         </button>
       </form>
-
-      <p className="text-xs text-gray-400 text-center mt-4">
-       
-      </p>
     </div>
   );
 }
